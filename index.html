@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FORM: Robot Manipulation through Direct Material Law Identification</title>
+  <meta name="description" content="FORM identifies a material law from a single robot interaction with one linear least-squares solve, then reuses it in MPM to plan new actions on new geometries.">
+  <meta name="author" content="Stepan Tretiakov, Ruihan Zhao, Cheng-Hsi Hsiao, Xingjian Li, Adam Thorpe, Hassan Iqbal, Sandeep Chinchali, Ufuk Topcu, Krishna Kumar">
+  <link rel="canonical" href="https://form-robots.github.io/">
+  <meta name="theme-color" content="#f4f6f7">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FORM">
+  <meta property="og:title" content="FORM: Robot Manipulation through Direct Material Law Identification">
+  <meta property="og:description" content="Identify a material law from one robot interaction with a single least-squares solve, then plan new actions on new geometries.">
+  <meta property="og:url" content="https://form-robots.github.io/">
+  <meta property="og:image" content="https://form-robots.github.io/assets/img/social.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FORM: the same pinch, press, and pour produce different outcomes for different materials.">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400&amp;display=swap">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="#top">FORM</a>
+    <nav aria-label="Sections">
+      <a href="#video">Video</a>
+      <a href="#abstract">Abstract</a>
+      <a href="#method">Method</a>
+      <a href="#results">Results</a>
+      <a href="#benchmark">Benchmark</a>
+      <a href="#code">Code</a>
+      <a href="#bibtex">BibTeX</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero" id="top">
+  <div class="wrap">
+    <h1>
+      <span class="wordmark">FORM</span><span class="visually-hidden">: </span>
+      <span class="title">Robot Manipulation through Direct Material Law Identification</span>
+    </h1>
+    <p class="acronym"><b>F</b>rom <b>O</b>bserved <b>R</b>esponse to <b>M</b>aterial laws</p>
+
+    <ul class="authors">
+      <li><a href="https://scholar.google.com/citations?user=p7JCBQYAAAAJ">Stepan Tretiakov</a><sup>1,*</sup></li>
+      <li><a href="https://philipzrh.com/">Ruihan Zhao</a><sup>2</sup></li>
+      <li><a href="https://www.geoelements.org/team/cheng-hsi-hsiao">Cheng-Hsi Hsiao</a><sup>3</sup></li>
+      <li><a href="https://oden.utexas.edu/people/directory/Xingjian-Li/">Xingjian Li</a><sup>4</sup></li>
+      <li><a href="https://ajthor.github.io/">Adam Thorpe</a><sup>4</sup></li>
+      <li><a href="https://oden.utexas.edu/people/directory/hassan-iqbal-2354/">Hassan Iqbal</a><sup>4</sup></li>
+      <li><a href="https://utaustin-swarmlab.github.io/">Sandeep Chinchali</a><sup>2</sup></li>
+      <li><a href="https://autonomy.oden.utexas.edu/Groups/autonomous-systems-group">Ufuk Topcu</a><sup>5</sup></li>
+      <li><a href="https://www.geoelements.org/">Krishna Kumar</a><sup>3,4</sup></li>
+    </ul>
+    <ul class="affiliations">
+      <li><sup>1</sup>Mechanical Engineering, UC Berkeley</li>
+      <li><sup>2</sup>Electrical and Computer Engineering, UT Austin</li>
+      <li><sup>3</sup>Civil, Architectural and Environmental Engineering, UT Austin</li>
+      <li><sup>4</sup>Oden Institute, UT Austin</li>
+      <li><sup>5</sup>Aerospace Engineering and Engineering Mechanics, UT Austin</li>
+    </ul>
+    <p class="contact"><sup>*</sup>Corresponding author: <a href="mailto:stepa@berkeley.edu">stepa@berkeley.edu</a></p>
+
+    <div class="links">
+      <span class="btn btn-soon" aria-disabled="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+        Paper <span class="soon">arXiv soon</span>
+      </span>
+      <a class="btn" href="#video">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.8v6.4l5.2-3.2z" fill="currentColor"/></svg>
+        Video
+      </a>
+      <a class="btn" href="https://github.com/form-robots/FORM">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4l-3 16"/></svg>
+        Code
+      </a>
+      <span class="btn btn-soon" aria-disabled="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="7" ry="2.5"/><path d="M5 5.5v13c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-13M5 12c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5"/></svg>
+        Data <span class="soon">soon</span>
+      </span>
+      <a class="btn btn-light" href="#bibtex">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4H8a2 2 0 0 0-2 2v3.5A2.5 2.5 0 0 1 4 12a2.5 2.5 0 0 1 2 2.5V18a2 2 0 0 0 2 2h1M15 4h1a2 2 0 0 1 2 2v3.5a2.5 2.5 0 0 0 2 2.5 2.5 2.5 0 0 0-2 2.5V18a2 2 0 0 1-2 2h-1"/></svg>
+        BibTeX
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="teaser" aria-labelledby="teaser-title">
+  <div class="wrap">
+    <div class="teaser-card">
+      <div>
+        <h2 id="teaser-title">Identify material laws.<br>Plan robot actions.</h2>
+        <p class="lede">Same action. Different materials. Different outcomes.</p>
+        <ol class="steps">
+          <li><span class="num">01</span><div><b>Observe one interaction</b><span class="sub">Material motion and contact forces</span></div></li>
+          <li><span class="num">02</span><div><b>Recover an explicit material law</b><span class="sub">One linear least-squares solve on the weak form, with no differentiation through simulation</span></div></li>
+          <li><span class="num">03</span><div><b>Use that law to plan robot actions</b><span class="sub">New tasks and geometries, without refitting</span></div></li>
+        </ol>
+      </div>
+      <figure class="grid9">
+        <span class="corner"></span>
+        <span class="col">Plasticine</span><span class="col">Play-Doh</span><span class="col">Butter slime</span>
+        <span class="row"><b>Pinch</b> to 25&nbsp;mm</span>
+        <img src="media/teaser/pinch_plasticine.jpg" width="532" height="398" alt="A two-finger gripper pinching gray plasticine">
+        <img src="media/teaser/pinch_playdoh.jpg" width="532" height="399" alt="The same pinch on red Play-Doh">
+        <img src="media/teaser/pinch_slime.jpg" width="533" height="399" alt="The same pinch on yellow butter slime">
+        <span class="row"><b>Press</b> at 10&nbsp;N</span>
+        <img src="media/teaser/press_plasticine.jpg" width="528" height="397" alt="A plate pressing a gray plasticine sphere">
+        <img src="media/teaser/press_playdoh.jpg" width="530" height="396" alt="The same press on a red Play-Doh sphere">
+        <img src="media/teaser/press_slime.jpg" width="529" height="397" alt="The same press on a yellow butter slime sphere">
+        <span class="corner"></span>
+        <span class="col">Glycerol</span><span class="col">90% glycerol</span><span class="col">Water</span>
+        <span class="row"><b>Pour</b> at 10°/s</span>
+        <img class="tall" src="media/teaser/pour_glycerol.jpg" width="531" height="618" alt="The robot pouring glycerol from a tilted cup">
+        <img class="tall" src="media/teaser/pour_glycerol90.jpg" width="531" height="616" alt="The same pour with 90% glycerol">
+        <img class="tall" src="media/teaser/pour_water.jpg" width="531" height="618" alt="The same pour with water">
+        <figcaption>From the same starting shape, the same 25&nbsp;mm pinch or 10&nbsp;N press deforms each material differently, and the same 10°/s pour flows differently for each liquid.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="video" aria-labelledby="video-title">
+  <div class="wrap">
+    <p class="eyebrow">Video</p>
+    <h2 class="section-title" id="video-title">FORM in three minutes</h2>
+    <p class="section-lede">Narrated through on-screen captions; the video has no audio track.</p>
+    <div class="player">
+      <video id="overview" controls playsinline preload="none" poster="media/video/form_poster.jpg" width="1280" height="720" aria-label="FORM overview video, 2 minutes 58 seconds, captioned">
+        <source src="media/video/form.mp4" type="video/mp4">
+        <a href="media/video/form.mp4">Download the video (MP4, 14&nbsp;MB)</a>
+      </video>
+      <button class="play" type="button" aria-label="Play the overview video">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg>
+      </button>
+    </div>
+    <div class="chapters" role="group" aria-label="Chapters">
+      <button type="button" data-t="0"><time>0:00</time>Overview</button>
+      <button type="button" data-t="13"><time>0:13</time>Observe</button>
+      <button type="button" data-t="45"><time>0:45</time>Identify and plan</button>
+      <button type="button" data-t="73"><time>1:13</time>Rod insertion</button>
+      <button type="button" data-t="85"><time>1:25</time>Golf putting</button>
+      <button type="button" data-t="95"><time>1:35</time>Simulated shaping</button>
+      <button type="button" data-t="110"><time>1:50</time>Hardware shaping</button>
+      <button type="button" data-t="140"><time>2:20</time>Pouring</button>
+      <button type="button" data-t="166"><time>2:46</time>Takeaways</button>
+    </div>
+    <details class="transcript">
+      <summary>Transcript</summary>
+      <div class="transcript-body">
+        <h3>0:00 Overview</h3>
+        <p>Different materials respond differently to the same action. We observe how the material moves during one interaction. Our method, FORM, identifies a material law. We use the identified law to plan new actions for new geometries.</p>
+        <h3>0:13 Observe</h3>
+        <p>First, we record the material as it deforms. With RGB-D, we reconstruct the shape assuming symmetry around the pressing axis. We keep the volume fixed, so the material spreads sideways as it flattens. We infer the flow inside from the surface motion, assuming no slip at contacts. Then we follow particles through this flow to recover their 3D paths. With stereo, we track the same texture in two views to recover surface motion. From the surface motion, we estimate how the interior moves. The motion and measured contact forces then go into material identification.</p>
+        <h3>0:45 Identify and plan</h3>
+        <p>Which material law explains the motion we just observed? We weight Newton’s law and integrate over space and time. Our test fields cancel the pressure term, leaving only deviatoric stress. We express stress using known responses and unknown coefficients. Linear least squares gives us the coefficients of the material law. Keeping the law fixed, we plan new robot actions in simulation. Finally, we execute that plan on the real material.</p>
+        <h3>1:13 Rod insertion</h3>
+        <p>From bending and force, we identify each material’s stiffness. Our task is rod insertion: a new action and geometry. Matched ID uses the rod’s identified law; swapped ID uses the other material’s law.</p>
+        <h3>1:25 Golf putting</h3>
+        <p>We reuse the material laws identified from bending. We plan forward-stroke duration and aim angle to stop the ball on target. Matched plans succeed; swapped plans miss.</p>
+        <h3>1:35 Simulated shaping</h3>
+        <p>From pressing, we identify stiffness and yield stress for each material. Keeping those laws fixed, we plan six pinches to shape a larger block into an X. Both matched plans give lower surface error.</p>
+        <h3>1:50 Hardware shaping</h3>
+        <p>For each material, one press identifies stiffness and yield stress. We use those laws to predict a separate, lower-force press. Next, we plan four pinches to shape fresh specimens into an X. Here, the robot executes the plan on a fresh Play-Doh specimen. The identified laws stay fixed throughout planning and execution. After rigid alignment, footprint overlap is 72 to 78 percent.</p>
+        <h3>2:20 Pouring</h3>
+        <p>We identify an effective viscosity from a single glycerol pour. We keep it fixed and plan the cup’s tilt for each of six target volumes. Across all six targets, the largest mean error is 3.8 milliliters. Water overpours when we use the same commands planned for glycerol.</p>
+        <h3>2:46 Takeaways</h3>
+        <p>FORM identifies a material law from one robot interaction. We identify material laws without backpropagation. We use the law in MPM to predict motion and plan actions. We reuse the identified material law for new actions and geometries.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section class="section" id="abstract" aria-labelledby="abstract-title">
+  <div class="wrap narrow">
+    <h2 class="section-title" id="abstract-title">Abstract</h2>
+    <p class="abstract">Every unfamiliar deformable material presents a robot with unknown physical properties and an unknown response to force and motion, making rapid online identification essential for reliable manipulation. We present FORM (From Observed Response to Material laws), which identifies material behavior from a single robot interaction and reuses the recovered model to plan manipulation under new actions and geometries. We convert observed material motion and contact forces into linear equations via weak-form momentum balance with material parameters as unknowns, and assemble them in the same MPM discretization used for forward prediction, reducing identification to a single least-squares solve whose solution is used directly by the simulator without refitting or conversion. Across four material classes, this reduces identification time from roughly 10–25 minutes for iterative baselines to 2–5 seconds, while retaining competitive accuracy on new motions, initial conditions, and geometries. We demonstrate the approach on elastic rod insertion, golf putting with an elastic club, elastoplastic shaping, and target-volume pouring, where models identified from one interaction are reused to plan different motions or manipulate different geometries. The method estimates elastic properties within 3.4% and elastoplastic properties within 2%, achieves 72.4–77.8% IoU in hardware shaping, and limits the largest mean pouring error to 3.8&nbsp;mL over 60–160&nbsp;mL targets.</p>
+  </div>
+</section>
+
+<section class="section" id="method" aria-labelledby="method-title">
+  <div class="wrap">
+    <p class="eyebrow">Method</p>
+    <h2 class="section-title" id="method-title">Recover the material law. Plan the robot action.</h2>
+    <p class="section-lede">FORM holds the observed motion fixed and asks which material law explains it. Weighted momentum balance turns that question into a linear system in the material coefficients, assembled in the same MPM discretization the robot later uses to predict new actions.</p>
+    <figure class="figure">
+      <img src="media/figures/method.webp" width="2000" height="938" alt="Method overview in three panels. Build the weak balance: reconstructed motion and contact force, the material state, and a chosen stress basis enter an integral weighted by test functions. Identify the law: one linear least-squares solve gives stiffness E and yield stress Y. Plan and execute: MPM plans robot actions toward a target shape with the law held fixed, and the plan runs on a real specimen.">
+      <figcaption><b>1</b>&nbsp;Tracked motion and contact force enter a weak momentum balance. <b>2</b>&nbsp;One least-squares solve returns the material coefficients. <b>3</b>&nbsp;MPM plans new actions with the identified law held fixed, and the robot executes the plan.</figcaption>
+    </figure>
+
+    <div class="ideas">
+      <article class="idea">
+        <h3><span>01</span>Pressure drops out</h3>
+        <p>Weighting momentum balance with a smooth test field ψ<sub>j</sub> and integrating by parts moves derivatives from stress onto the weight. Divergence-free fields, ∇·ψ<sub>j</sub>&nbsp;=&nbsp;0, remove the unknown pressure for every pressure field and leave the deviatoric stress to identify.</p>
+        <div class="eq-wrap"><img class="eq" src="assets/math/weak.svg" style="width:28.7em" alt="Integral of tau(theta) double-dot D[psi_j], minus the integral of p times the divergence of psi_j, which is zero when psi_j is divergence-free, equals the integral of rho (g minus a) dot psi_j."></div>
+      </article>
+      <article class="idea">
+        <h3><span>02</span>No measured accelerations</h3>
+        <p>Accelerations estimated from tracked motion are imprecise at high deformation rates. Space–time weights that vanish at both ends of each window let integration by parts replace acceleration with the known rate of change of the weight along each track.</p>
+        <div class="eq-wrap"><img class="eq" src="assets/math/time.svg" style="width:22.83em" alt="w_j(x, t) = chi_j(t) psi_j(x) with chi_j zero at both ends of the window, so minus the time integral of the sum of m_p a_p dot w_j equals the time integral of the sum of m_p v_p dot the rate of change of w_j along particle p."></div>
+      </article>
+      <article class="idea">
+        <h3><span>03</span>Linear in the unknowns</h3>
+        <p>Stress is a combination of candidate responses, either analytic laws or pretrained function-encoder bases. Each may depend nonlinearly on deformation, but only linearly on the coefficients θ, so every test field adds one linear equation and one least-squares solve returns θ.</p>
+        <div class="eq-wrap"><img class="eq" src="assets/math/linear.svg" style="width:11.25em" alt="tau(q; theta) = sum over k of theta_k T_k(q); theta-hat = argmin over theta of the squared norm of A theta minus b."></div>
+      </article>
+      <article class="idea">
+        <h3><span>04</span>The simulator’s own basis</h3>
+        <p>With the MPM quadratic B-splines as test fields, each weighted balance is the simulator’s internal-force assembly under particle quadrature. The identified coefficients go straight into MPM, without refitting or conversion.</p>
+        <div class="eq-wrap"><img class="eq" src="assets/math/basis.svg" style="width:25.96em" alt="psi_(i,d)(x) = N_i(x) e_d; the integral of sigma double-dot D[psi_(i,d)] is approximately the sum over particles of V_p e_d-transpose sigma_p grad N_i(x_p), which equals minus e_d-transpose times the MPM internal force at node i."></div>
+      </article>
+    </div>
+    <div class="plan-row">
+      <div>
+        <h3>Plan with the identified law</h3>
+        <p>With θ̂ held fixed, MPM predicts the outcome of candidate motions, and the planner searches a small set of motion parameters for the lowest task cost. Plans run open loop: measurements during execution never update the model.</p>
+      </div>
+      <div class="eq-wrap"><img class="eq" src="assets/math/plan.svg" style="width:15.76em" alt="u-star(theta-hat) is in the argmin over admissible motions u of the task cost J of the predicted trajectory S_theta-hat(x_0, u) and the goal G."></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="results" aria-labelledby="results-title">
+  <div class="wrap">
+    <p class="eyebrow">Results</p>
+    <h2 class="section-title" id="results-title">Identify once. Plan new actions and geometries.</h2>
+    <p class="section-lede">Every task identifies the law from a single probe and keeps it fixed. <b>Matched ID</b> plans with the material’s own law; <b>swapped ID</b> plans with the other material’s law.</p>
+
+    <div class="stats">
+      <div class="stat"><strong>2–5&nbsp;s</strong><span>to identify a law with FORM from full observations, vs. roughly 10–25&nbsp;min for iterative baselines</span></div>
+      <div class="stat"><strong>≤&nbsp;3.4%</strong><span>error in identified elastic moduli; under 2% for elastoplastic parameters</span></div>
+      <div class="stat"><strong>72–78%</strong><span>footprint IoU after open-loop shaping of three real materials</span></div>
+      <div class="stat"><strong>3.8&nbsp;mL</strong><span>largest mean pouring error over six targets from 60 to 160&nbsp;mL</span></div>
+    </div>
+
+    <article class="task" id="elastic">
+      <div class="task-head"><h3>Elastic rod insertion and golf putting</h3><span class="pill">Simulation</span></div>
+      <p class="desc">A bending probe identifies Young’s modulus from tracked surface texture and pusher force: 80.61&nbsp;kPa for material <b class="mat-a">A</b> (true 80&nbsp;kPa) and 248.11&nbsp;kPa for <b class="mat-b">B</b> (true 240&nbsp;kPa). The same laws then plan two tasks with new actions and geometry.</p>
+      <div class="media-grid two">
+        <figure class="media">
+          <video class="clip" muted loop playsinline preload="none" poster="media/results/insertion.jpg" width="1280" height="896" aria-label="Rod insertion in simulation: plans using matched and swapped identified laws for materials A and B">
+            <source src="media/results/insertion.mp4" type="video/mp4">
+          </video>
+          <figcaption>
+            <b>Rod insertion.</b> Choose gripper height and tilt to thread an 8&nbsp;mm rod through a 12&nbsp;mm hole.
+            <ul class="outcomes">
+              <li class="ok">Matched: both rods insert without wall contact; RMS tip error 0.355&nbsp;mm (A) and 1.042&nbsp;mm (B)</li>
+              <li class="bad">Swapped: both rods hit the wall</li>
+            </ul>
+          </figcaption>
+        </figure>
+        <figure class="media">
+          <video class="clip" muted loop playsinline preload="none" poster="media/results/golf.jpg" width="1280" height="750" aria-label="Golf putting with elastic clubs in simulation: matched and swapped plans for materials A and B">
+            <source src="media/results/golf.mp4" type="video/mp4">
+          </video>
+          <figcaption>
+            <b>Golf putting with an elastic club.</b> Choose forward-stroke duration and aim angle to stop the ball in a 35&nbsp;mm-radius target 612&nbsp;mm away.
+            <ul class="outcomes">
+              <li class="ok">Matched: 2.36&nbsp;mm (A) and 19.06&nbsp;mm (B) from the target center</li>
+              <li class="bad">Swapped: 350.47&nbsp;mm and 158.67&nbsp;mm; both miss</li>
+            </ul>
+          </figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <article class="task" id="shaping-sim">
+      <div class="task-head"><h3>Elastoplastic shaping</h3><span class="pill">Simulation</span></div>
+      <p class="desc">Materials <b class="mat-a">A</b> and <b class="mat-b">B</b> share their stiffness, but B’s yield threshold is ten times higher. A flat-plate press on a 30&nbsp;×&nbsp;30&nbsp;×&nbsp;25&nbsp;mm specimen identifies both parameters, and six planned pinches then shape a larger block into an X.</p>
+      <div class="media-grid split">
+        <figure class="media">
+          <video class="clip" muted loop playsinline preload="none" poster="media/results/shaping_sim.jpg" width="1332" height="936" aria-label="Simulated X shaping with six pinches: matched and swapped plans for materials A and B">
+            <source src="media/results/shaping_sim.mp4" type="video/mp4">
+          </video>
+          <figcaption>Rows are materials; columns are whose identified law planned the pinches.</figcaption>
+        </figure>
+        <div class="summary">
+          <h4>Identified from one press</h4>
+          <table class="mini">
+            <thead><tr><th scope="col">Material</th><th scope="col">E (kPa)</th><th scope="col">Y (kPa)</th></tr></thead>
+            <tbody>
+              <tr><th scope="row" class="mat-a">A</th><td>80.795 <span class="true">/ 80</span></td><td>1.015 <span class="true">/ 1</span></td></tr>
+              <tr><th scope="row" class="mat-b">B</th><td>81.396 <span class="true">/ 80</span></td><td>10.184 <span class="true">/ 10</span></td></tr>
+            </tbody>
+          </table>
+          <p>Identified / true values; every error is below 2%. Hencky elasticity with von Mises plasticity.</p>
+          <h4>Surface error after six pinches</h4>
+          <table class="mini">
+            <thead><tr><th scope="col">Plan</th><th scope="col" class="mat-a">A</th><th scope="col" class="mat-b">B</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Matched ID</th><td class="good">0.883&nbsp;mm</td><td class="good">1.256&nbsp;mm</td></tr>
+              <tr><th scope="row">Swapped ID</th><td>1.226&nbsp;mm</td><td>1.739&nbsp;mm</td></tr>
+            </tbody>
+          </table>
+          <p>Mean closest-point distance to the target surface, 1&nbsp;s after the fingers withdraw.</p>
+        </div>
+      </div>
+      <figure class="media">
+        <img src="media/figures/shaping_sim.webp" width="2400" height="431" alt="Identification press, a planned pinch, the X-shaped target, and final shapes for matched and swapped plans of materials A and B, with dashed target outlines">
+        <figcaption>Identification press, a planned pinch, and the target, followed by final shapes for matched and swapped plans. Dashed outlines mark the target.</figcaption>
+      </figure>
+    </article>
+
+    <article class="task" id="hardware">
+      <div class="task-head"><h3>Pressing and shaping real materials</h3><span class="pill pill-hw">Hardware</span></div>
+      <p class="desc">One press of a 45&nbsp;mm sphere, reconstructed from two RealSense D435 cameras under constant volume, identifies stiffness and yield stress for <b class="mat-playdoh">red Play-Doh</b>, <b class="mat-slime">yellow butter slime</b>, and <b class="mat-plasticine">gray plasticine</b>. With those laws fixed, MPM predicts a separate press, and the planner chooses four pinches that shape fresh 60&nbsp;×&nbsp;60&nbsp;×&nbsp;25&nbsp;mm blocks into an X, executed open loop.</p>
+      <figure class="media">
+        <video class="clip" muted loop playsinline preload="none" poster="media/results/pressing.jpg" width="1820" height="828" aria-label="A recorded press of Play-Doh, butter slime, and plasticine above the MPM prediction from the identified laws">
+          <source src="media/results/pressing.mp4" type="video/mp4">
+        </video>
+        <figcaption>A separate, lower-force press (top) and the force-driven MPM prediction from the identified laws at matching times (bottom).</figcaption>
+      </figure>
+      <div class="media-grid hw">
+        <figure class="media">
+          <video class="clip" muted loop playsinline preload="none" poster="media/results/shaping_hw.jpg" width="424" height="210" aria-label="The robot executing four planned pinches on a fresh Play-Doh block">
+            <source src="media/results/shaping_hw.mp4" type="video/mp4">
+          </video>
+          <figcaption>Four planned pinches, executed open loop on a fresh Play-Doh block.</figcaption>
+        </figure>
+        <figure class="media">
+          <div class="scan-grid">
+            <div class="scan"><img src="media/figures/scan_playdoh.webp" width="651" height="536" alt="Scan of the shaped Play-Doh X inside the dashed target outline"><span class="mat-playdoh">Play-Doh</span><strong>75.7%</strong></div>
+            <div class="scan"><img src="media/figures/scan_slime.webp" width="652" height="536" alt="Scan of the shaped butter slime X inside the dashed target outline"><span class="mat-slime">Butter slime</span><strong>72.4%</strong></div>
+            <div class="scan"><img src="media/figures/scan_plasticine.webp" width="651" height="536" alt="Scan of the shaped plasticine X inside the dashed target outline"><span class="mat-plasticine">Plasticine</span><strong>77.8%</strong></div>
+          </div>
+          <figcaption>Scans after four pinches, rigidly aligned to the dashed target without scaling. Numbers are footprint IoU.</figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <article class="task" id="pouring">
+      <div class="task-head"><h3>Pouring a target volume</h3><span class="pill pill-hw">Hardware</span></div>
+      <p class="desc">A single 60° exploratory pour of glycerol gives an effective Newtonian viscosity of 3.44&nbsp;Pa·s from a reduced weak-form balance at the spout, using the receiver volume tracked on video and the cup motion from the robot’s joint trajectory. With that viscosity and an effective wall-contact coefficient (calibrated in MPM from the same pour) held fixed, MPM selects the final tilt angle for six targets from 60 to 160&nbsp;mL. The commands are frozen before five hardware repeats per target.</p>
+      <div class="media-grid two">
+        <figure class="media">
+          <video class="clip" muted loop playsinline preload="none" poster="media/results/pouring.jpg" width="1280" height="778" aria-label="The glycerol identification pour on hardware next to its MPM replay">
+            <source src="media/results/pouring.mp4" type="video/mp4">
+          </video>
+          <figcaption>The 60° identification pour on hardware and its MPM replay.</figcaption>
+        </figure>
+        <figure class="media">
+          <img src="media/figures/pouring_plot.webp" width="1400" height="748" alt="Receiver volume versus target volume: glycerol hardware means and MPM predictions follow the target line from 60 to 160 mL, while water poured with the same commands lies above it at every target">
+          <figcaption>Glycerol: frozen MPM predictions and hardware mean&nbsp;±&nbsp;SD over five trials per target. Water: one trial per target, poured with the commands planned for glycerol.</figcaption>
+        </figure>
+      </div>
+      <figure class="media">
+        <img src="media/figures/pouring_cups.webp" width="2400" height="315" alt="Six receiver cups labeled target to measured volume: 60 to 59, 80 to 84, 100 to 101, 120 to 123, 140 to 137, and 160 to 157 mL">
+        <figcaption>Repeat 2: target → measured receiver volume (mL). Across all six targets, the largest mean error is 3.8&nbsp;mL; water overshoots every target.</figcaption>
+      </figure>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="benchmark" aria-labelledby="benchmark-title">
+  <div class="wrap">
+    <p class="eyebrow">Benchmark</p>
+    <h2 class="section-title" id="benchmark-title">Seconds instead of minutes</h2>
+    <p class="section-lede">Identification accuracy and solve time on the NCLaw dataset and setup: four materials, one trajectory each. Mean loss is averaged over three generalization tests: extended time, unseen initial conditions, and a new geometry.</p>
+    <div class="table-wrap">
+      <table class="bench">
+        <thead>
+          <tr>
+            <th scope="col" rowspan="2">Method</th>
+            <th scope="colgroup" colspan="2" class="grp">Jell-O</th>
+            <th scope="colgroup" colspan="2" class="grp">Sand</th>
+            <th scope="colgroup" colspan="2" class="grp">Plasticine</th>
+            <th scope="colgroup" colspan="2" class="grp">Water</th>
+          </tr>
+          <tr>
+            <th scope="col" class="grp">Mean loss</th><th scope="col">Time (s)</th>
+            <th scope="col" class="grp">Mean loss</th><th scope="col">Time (s)</th>
+            <th scope="col" class="grp">Mean loss</th><th scope="col">Time (s)</th>
+            <th scope="col" class="grp">Mean loss</th><th scope="col">Time (s)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">NCLaw<small>Neural constitutive law</small></th>
+            <td class="grp">5.2×10<sup>−4</sup></td><td class="t">1513.2</td>
+            <td class="grp">1.6×10<sup>−4</sup></td><td class="t">1305.6</td>
+            <td class="grp">1.2×10<sup>−4</sup></td><td class="t">1300.2</td>
+            <td class="grp">5.7×10<sup>−4</sup></td><td class="t">1306.8</td>
+          </tr>
+          <tr>
+            <th scope="row">Diff. Sys-Id<small>Oracle: exact law given</small></th>
+            <td class="grp">1.2×10<sup>−8</sup></td><td class="t">715.8</td>
+            <td class="grp">6.3×10<sup>−13</sup></td><td class="t">1132.8</td>
+            <td class="grp">1.6×10<sup>−10</sup></td><td class="t">1028.4</td>
+            <td class="grp">4.0×10<sup>−9</sup></td><td class="t">556.2</td>
+          </tr>
+          <tr class="ours">
+            <th scope="row">FORM (Fn Enc.)<small>Pretrained bases by material type</small></th>
+            <td class="grp">3.5×10<sup>−4</sup></td><td class="t">5.2</td>
+            <td class="grp">3.3×10<sup>−8</sup></td><td class="t">0.1</td>
+            <td class="grp">2.9×10<sup>−6</sup></td><td class="t">5.3</td>
+            <td class="grp">2.3×10<sup>−6</sup></td><td class="t">4.8</td>
+          </tr>
+          <tr class="ours">
+            <th scope="row">FORM (Full)<small>Full information</small></th>
+            <td class="grp">5.1×10<sup>−6</sup></td><td class="t">4.4</td>
+            <td class="grp best">1.4×10<sup>−8</sup></td><td class="t best">2.4</td>
+            <td class="grp best">5.2×10<sup>−7</sup></td><td class="t best">4.7</td>
+            <td class="grp">2.3×10<sup>−6</sup></td><td class="t">2.2</td>
+          </tr>
+          <tr class="ours">
+            <th scope="row">FORM (No stress)<small>Observations without stress</small></th>
+            <td class="grp best">5.1×10<sup>−6</sup></td><td class="t best">3.5</td>
+            <td class="grp">2.0×10<sup>−8</sup></td><td class="t">6.0</td>
+            <td class="grp">5.2×10<sup>−7</sup></td><td class="t">6.5</td>
+            <td class="grp best">2.3×10<sup>−6</sup></td><td class="t best">1.6</td>
+          </tr>
+          <tr class="ours">
+            <th scope="row">FORM (Pos. only)<small>Positions only</small></th>
+            <td class="grp">1.3×10<sup>−5</sup></td><td class="t">3.5</td>
+            <td class="grp">1.0×10<sup>−5</sup></td><td class="t">12.8</td>
+            <td class="grp">4.6×10<sup>−6</sup></td><td class="t">21.8</td>
+            <td class="grp">1.0×10<sup>−2</sup></td><td class="t">4.6</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="table-notes">
+      <li><b>Diff. Sys-Id</b> is an oracle: it differentiates through MPM trajectories with the exact constitutive law given.</li>
+      <li><b>Full</b> uses full information, including stress; <b>No stress</b> drops the stress observations; <b>Pos. only</b> uses positions alone. For plasticine and sand, positions do not determine the elastic state, so Pos. only scans forward rollouts over the plastic parameter with the elastic moduli fixed at their true values.</li>
+      <li><b>Fn Enc.</b> uses pretrained function-encoder bases selected by material type, for when the exact law is unknown.</li>
+      <li>Bold marks the lowest-loss non-oracle result for each material and its solve time.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="code" aria-labelledby="code-title">
+  <div class="wrap">
+    <p class="eyebrow">Code</p>
+    <h2 class="section-title" id="code-title">Code and reproduction</h2>
+    <div class="code-grid">
+      <div>
+        <p>The repository contains the weak-form identification, a GPU MPM solver in NVIDIA Warp with the added constitutive models, the pipelines for rod insertion, golf putting, shaping, and pouring, a reproduction runner that recomputes the paper’s material estimates and checks saved results, and the renderer for the video and slides.</p>
+        <p>Recordings and saved simulation data will be released separately.</p>
+        <div class="links start">
+          <a class="btn" href="https://github.com/form-robots/FORM">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4l-3 16"/></svg>
+            Code on GitHub
+          </a>
+          <a class="btn btn-light" href="https://github.com/form-robots/FORM/blob/main/docs/reproduction.md">Reproduction guide</a>
+        </div>
+        <p class="note">The MPM solver builds on <a href="https://github.com/zeshunzong/warp-mpm">warp-mpm</a> by Zong et al.; see <a href="https://github.com/form-robots/FORM/blob/main/AUTHORS.md">AUTHORS.md</a> for attribution.</p>
+      </div>
+      <div class="codeblock">
+        <div class="codeblock-head"><span>Setup · Linux, Python 3.12</span><button type="button" class="copy" data-copy="setup-code">Copy</button></div>
+        <pre><code id="setup-code">git clone https://github.com/form-robots/FORM.git
+cd FORM
+uv venv --python 3.12
+uv pip install --python .venv/bin/python -r requirements-lock.txt
+uv pip install --python .venv/bin/python --no-deps -e '.[paper,dev]'
+source .venv/bin/activate</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section bibtex" id="bibtex" aria-labelledby="bibtex-title">
+  <div class="wrap">
+    <p class="eyebrow">Citation</p>
+    <h2 class="section-title" id="bibtex-title">BibTeX</h2>
+    <div class="codeblock">
+      <div class="codeblock-head"><span>BibTeX</span><button type="button" class="copy" data-copy="bibtex-code">Copy</button></div>
+      <pre><code id="bibtex-code">@misc{tretiakov2026form,
+  title  = {{FORM}: Robot Manipulation through Direct Material Law Identification},
+  author = {Tretiakov, Stepan and Zhao, Ruihan and Hsiao, Cheng-Hsi and Li, Xingjian and
+            Thorpe, Adam and Iqbal, Hassan and Chinchali, Sandeep and Topcu, Ufuk and Kumar, Krishna},
+  year   = {2026},
+  url    = {https://form-robots.github.io/}
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <p><b>FORM</b> · From Observed Response to Material laws</p>
+    <p>UC Berkeley · UT Austin · <a href="https://github.com/form-robots/form-robots.github.io">Page source</a></p>
+  </div>
+</footer>
+</body>
+</html>
